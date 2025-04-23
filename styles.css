@@ -1,0 +1,287 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+    color: #e0e0e0;
+    background: #0A0A0A;
+}
+
+/* Navigation Styles */
+.navbar {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    background: rgba(15, 15, 15, 0.95);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.nav-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #e74c3c;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #e0e0e0;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: #e74c3c;
+}
+
+/* Section Styles */
+.content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.parallax-section {
+    min-height: 100vh;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+}
+
+.hero {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://www.sheknows.com/wp-content/uploads/2018/08/f5nq3i1ecsoqpegm0miu.jpeg');
+}
+
+.stories {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('assets/stories-bg.svg');
+}
+
+.section {
+    padding: 6rem 0;
+    background: #0A0A0A;
+}
+
+/* Hero Section */
+.hero h1 {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.hero p {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.cta-button {
+    display: inline-block;
+    padding: 1rem 2rem;
+    background: #e74c3c;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.cta-button:hover {
+    transform: translateY(-3px);
+    background: #c0392b;
+}
+
+/* Celebrity Scroll Section */
+.celebrity-scroll {
+    width: 100%;
+    overflow: hidden;
+    margin-top: 3rem;
+    position: relative;
+}
+
+.celebrity-track {
+    display: flex;
+    gap: 2rem;
+    animation: scroll 30s linear infinite;
+    width: fit-content;
+}
+
+@keyframes scroll {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(calc(-300px * 3 - 6rem));
+    }
+}
+
+.celebrity-card {
+    flex: 0 0 300px;
+    height: 400px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.card-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 2rem;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.9));
+    color: white;
+    text-align: left;
+}
+
+.card-content p {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    font-style: italic;
+    line-height: 1.4;
+}
+
+.card-content span {
+    font-weight: bold;
+    color: #e74c3c;
+}
+
+@media (max-width: 768px) {
+    .celebrity-card {
+        flex: 0 0 250px;
+        height: 350px;
+    }
+    
+    .card-content {
+        padding: 1.5rem;
+    }
+    
+    .card-content p {
+        font-size: 1rem;
+    }
+    
+    @keyframes scroll {
+        0% {
+            transform: translateX(0);
+        }
+        100% {
+            transform: translateX(calc(-250px * 3 - 6rem));
+        }
+    }
+}
+
+/* Stories Section */
+.story-carousel {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.story-card {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2rem;
+    border-radius: 10px;
+    margin: 1rem 0;
+    display: none;
+}
+
+.story-card.active {
+    display: block;
+}
+
+.story-card p {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    font-style: italic;
+}
+
+.story-card span {
+    font-weight: bold;
+}
+
+/* Help Section */
+.help-content {
+    text-align: center;
+}
+
+.helpline {
+    margin: 2rem 0;
+    padding: 2rem;
+    background: #151515;
+    border-radius: 10px;
+}
+
+.phone-number {
+    display: block;
+    font-size: 2rem;
+    color: #e74c3c;
+    text-decoration: none;
+    margin: 1rem 0;
+    font-weight: bold;
+}
+
+.resources ul {
+    list-style: none;
+    margin-top: 1rem;
+}
+
+.resources li {
+    margin: 0.5rem 0;
+}
+
+/* Footer */
+footer {
+    background: #333;
+    color: white;
+    padding: 2rem 0;
+    text-align: center;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .nav-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .nav-links {
+        margin-top: 1rem;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .hero h1 {
+        font-size: 2.5rem;
+    }
+
+    .hero p {
+        font-size: 1.2rem;
+    }
+}
