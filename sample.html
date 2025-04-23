@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recovery Journey</title>
+    <style>
+        :root {
+            --primary: #5b9aa0;
+            --secondary: #d6e1e0;
+            --accent: #e6ad73;
+            --text: #333;
+            --light: #f8f9fa;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        h1, h2 {
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        .sections-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+        }
+
+        .section {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.3s ease;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Break the Chain Game Styles */
+        .chain-game {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .chain-container {
+            position: relative;
+            width: 250px;
+            height: 250px;
+            margin: 20px 0;
+            cursor: pointer;
+        }
+
+        .chain-svg {
+            width: 100%;
+            height: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .crack {
+            stroke: #ff4500;
+            stroke-width: 4;
+            stroke-linecap: round;
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            opacity: 0;
+        }
+
+        .motivational-message {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            color: var(--accent);
+            font-weight: bold;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .motivational-message.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Quiz Styles */
+        .quiz-container {
+            position: relative;
+            min-height: 300px;
+        }
+
+        .question-card {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            opacity: 0;
+            transform: translateX(50px);
+            transition: all 0.5s ease;
+            pointer-events: none;
+        }
+
+        .question-card.active {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: all;
+        }
+
+        .question {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        .answers {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .answer-btn {
+            background-color: var(--secondary);
+            border: none;
+            padding: 12px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s ease;
+            font-size: 1rem;
+        }
+
+        .answer-btn:hover, .answer-btn:focus {
+            background-color: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .answer-btn:active {
+            transform: translateY(0);
+        }
+
+        .feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: var(--light);
+            font-style: italic;
+            display: none;
+        }
+
+        .result-card {
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 0.5s ease;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            pointer-events: none;
+        }
+
+        .result-card.active {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: all;
+        }
+
+        .result-message {
+            font-size: 1.2rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .restart-btn {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 1rem;
+            margin-top: 20px;
+        }
+
+        .restart-btn:hover, .restart-btn:focus {
+            background-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        /* Accessibility */
+        button:focus, .chain-container:focus {
+            outline: 3px solid var(--accent);
+            outline-offset: 3px;
+        }
+
+        @media (max-width: 768px) {
+            .sections-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .section {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Your Recovery Journey</h1>
+            <p>Interactive tools to support your path to healing and growth</p>
+        </header>
+
+        <div class="sections-container">
+            <!-- Break the Chain Game -->
+            <section class="section chain-game">
+                <h2>Break the Chain</h2>
+                <p>Click on the chain three times to break free from what holds you back</p>
+                
+                <div class="chain-container" tabindex="0" role="button" aria-label="Click the chain three times to break it">
+                    <svg class="chain-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Chain Links -->
+                        <g class="chain-links">
+                            <path d="M100,50 C130,50 130,100 100,100 C70,100 70,50 100,50" fill="none" stroke="#555" stroke-width="10" />
+                            <path d="M100,100 C130,100 130,150 100,150 C70,150 70,100 100,100" fill="none" stroke="#555" stroke-width="10" />
+                        </g>
+                        
+                        <!-- Cracks (initially hidden) -->
+                        <path class="crack crack1" d="M95,75 L105,85" />
+                        <path class="crack crack2" d="M90,120 L110,130" />
+                        <path class="crack crack3" d="M80,100 L120,100" />
+                    </svg>
+                </div>
+                
+                <div class="motivational-message" id="chain-message">
+                    <!-- Message will appear here after breaking the chain -->
+                </div>
+            </section>
+
+            <!-- Motivational Quiz -->
+            <section class="section">
+                <h2>Are You Ready to Change?</h2>
+                
+                <div class="quiz-container">
+                    <!-- Question 1 -->
+                    <div class="question-card active" id="q1">
+                        <div class="question">How do you feel about making changes in your life?</div>
+                        <div class="answers">
+                            <button class="answer-btn" data-value="cautious">I'm nervous about change but willing to try</button>
+                            <button class="answer-btn" data-value="ready">I'm excited and ready to make changes</button>
+                            <button class="answer-btn" data-value="unsure">I'm not sure if I can change</button>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <!-- Question 2 -->
+                    <div class="question-card" id="q2">
+                        <div class="question">What's your biggest obstacle to change?</div>
+                        <div class="answers">
+                            <button class="answer-btn" data-value="fear">Fear of failure</button>
+                            <button class="answer-btn" data-value="support">Lack of support</button>
+                            <button class="answer-btn" data-value="habit">Difficult breaking old habits</button>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <!-- Question 3 -->
+                    <div class="question-card" id="q3">
+                        <div class="question">What would successful change look like to you?</div>
+                        <div class="answers">
+                            <button class="answer-btn" data-value="freedom">Freedom from my past</button>
+                            <button class="answer-btn" data-value="peace">Inner peace and happiness</button>
+                            <button class="answer-btn" data-value="growth">Continuous growth and learning</button>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <!-- Results Card -->
+                    <div class="result-card" id="result">
+                        <h3>Your Journey Reflection</h3>
+                        <div class="result-message"></div>
+                        <button class="restart-btn">Take Quiz Again</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        // Break the Chain Game
+        const chainContainer = document.querySelector('.chain-container');
+        const cracks = document.querySelectorAll('.crack');
+        const chainMessage = document.getElementById('chain-message');
+        const chainLinks = document.querySelector('.chain-links');
+
+        let clickCount = 0;
+        const messages = [
+            "Every step breaks a link in the chain.",
+            "You're making progress! Keep going!",
+            "Freedom! You've broken the chain that held you back. A new chapter begins now."
+        ];
+
+        // Create audio elements
+        const crackSound = new Audio();
+        crackSound.src = "data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA/+M4wAAAAAAAAAAAAEluZm8AAAAPAAAAAwAABPAAdXV1dXV1dXV1dXV1dXV1dXV1dXV1dXV1dXWenp6enp6enp6enp6enp6enp6enp6enp6enp6e1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1v////////////////////////////////8AAAAATGF2YzU4LjEzAAAAAAAAAAAAAAAAJAYGx//jaMAAAAAAAAAAAAAAAAAAAABJbmZvAAAADwAAAAMAAAisAB4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAfX19fX19fX19fX19fX19fX19fX19fX19fX19//////////////////////////8AAAAATGF2YzU4LjEzAAAAAAAAAAAAAAAAJAQAAAAAAAAAAAAAAAAAAAAA//uQZAAAAqJdTe0IAAIAAAA0goAABGG1F5w9AAgAAACXDAAAASP///////////////4P///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKa25EAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//sQZEMA5HVDUe0EAAIAAAA0goAABNhfS+oR4AAgAADSDAAAAb////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////8=";
+        const breakSound = new Audio();
+        breakSound.src = "data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA/+M4wAAAAAAAAAAAAEluZm8AAAAPAAAAAwAABPAAdXV1dXV1dXV1dXV1dXV1dXV1dXV1dXV1dXWenp6enp6enp6enp6enp6enp6enp6enp6enp6e1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1v////////////////////////////////8AAAAATGF2YzU4LjEzAAAAAAAAAAAAAAAAJAZEAAAAAAAA8CoYNJsBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//vAZAAAArNQz2sGGnRRyhntYMMujSFDN60YadFrKGe1gww6AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+
+        chainContainer.addEventListener('click', handleChainClick);
+        chainContainer.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                handleChainClick();
+            }
+        });
+
+        function handleChainClick() {
+            if (clickCount >= 3) return;
+            
+            // Play crack sound
+            crackSound.currentTime = 0;
+            crackSound.play().catch(e => console.log("Audio play failed:", e));
+            
+            // Show crack and animate it
+            const currentCrack = cracks[clickCount];
+            currentCrack.style.opacity = "1";
+            currentCrack.style.strokeDashoffset = "0";
+            currentCrack.style.transition = "stroke-dashoffset 0.5s ease, opacity 0.3s ease";
+            
+            // Update click count and message
+            clickCount++;
+            
+            // Update the message
+            chainMessage.textContent = messages[clickCount - 1];
+            chainMessage.classList.add('show');
+            
+            // If 3 clicks, break the chain
+            if (clickCount === 3) {
+                setTimeout(() => {
+                    breakSound.play().catch(e => console.log("Audio play failed:", e));
+                    
+                    // Animate the chain breaking
+                    chainLinks.style.transform = "rotate(10deg) translate(10px, 5px)";
+                    chainLinks.style.opacity = "0.6";
+                    
+                    setTimeout(() => {
+                        chainLinks.innerHTML = `
+                            <path d="M70,50 C100,50 100,70 80,80" fill="none" stroke="#555" stroke-width="10" />
+                            <path d="M120,150 C100,150 100,130 120,120" fill="none" stroke="#555" stroke-width="10" />
+                        `;
+                        chainLinks.style.transform = "rotate(0) translate(0, 0)";
+                        chainLinks.style.opacity = "1";
+                    }, 300);
+                }, 200);
+            }
+        }
+
+        // Motivational Quiz
+        const questions = document.querySelectorAll('.question-card');
+        const resultCard = document.getElementById('result');
+        const resultMessage = document.querySelector('.result-message');
+        const restartBtn = document.querySelector('.restart-btn');
+        
+        // Store answers
+        let answers = [];
+
+        // Handle answer clicks
+        document.querySelectorAll('.answer-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const value = this.getAttribute('data-value');
+                const questionCard = this.closest('.question-card');
+                const feedback = questionCard.querySelector('.feedback');
+                const questionId = questionCard.id;
+                
+                // Store answer
+                answers.push(value);
+                
+                // Show feedback based on answer
+                feedback.style.display = "block";
+                
+                switch(value) {
+                    case 'cautious':
+                        feedback.textContent = "It's natural to feel cautious. Every journey begins with a single step.";
+                        break;
+                    case 'ready':
+                        feedback.textContent = "Your readiness is a powerful force for change!";
+                        break;
+                    case 'unsure':
+                        feedback.textContent = "Doubt is part of growth. Acknowledging it is the first step to overcoming it.";
+                        break;
+                    case 'fear':
+                        feedback.textContent = "Fear of failure is common, but remember that each attempt is a learning opportunity.";
+                        break;
+                    case 'support':
+                        feedback.textContent = "Building a support network is an important part of your journey.";
+                        break;
+                    case 'habit':
+                        feedback.textContent = "Breaking old patterns takes time, but each day gets easier.";
+                        break;
+                    case 'freedom':
+                        feedback.textContent = "Freedom is a powerful motivator for lasting change.";
+                        break;
+                    case 'peace':
+                        feedback.textContent = "Finding inner peace is a beautiful goal worth pursuing.";
+                        break;
+                    case 'growth':
+                        feedback.textContent = "Embracing continuous growth creates a fulfilling life journey.";
+                        break;
+                }
+                
+                // Delay to show next question
+                setTimeout(() => {
+                    questionCard.classList.remove('active');
+                    
+                    // If it's the last question, show results
+                    if (questionId === 'q3') {
+                        setTimeout(() => {
+                            showResults();
+                        }, 500);
+                    } else {
+                        // Show next question
+                        const nextQuestionId = questionId === 'q1' ? 'q2' : 'q3';
+                        document.getElementById(nextQuestionId).classList.add('active');
+                    }
+                }, 1500);
+            });
+        });
+
+        // Show quiz results
+        function showResults() {
+            // Create a personalized message based on answers
+            let message = "";
+            
+            // Determine the main theme from answers
+            const mainThemes = {
+                cautious: "thoughtful approach",
+                ready: "enthusiasm",
+                unsure: "self-reflection",
+                fear: "courage",
+                support: "connection",
+                habit: "persistence",
+                freedom: "liberation",
+                peace: "inner harmony",
+                growth: "continuous improvement"
+            };
+            
+            // Get the most common theme
+            const themeCount = {};
+            answers.forEach(answer => {
+                themeCount[answer] = (themeCount[answer] || 0) + 1;
+            });
+            
+            let maxCount = 0;
+            let mainTheme = "";
+            for (const theme in themeCount) {
+                if (themeCount[theme] > maxCount) {
+                    maxCount = themeCount[theme];
+                    mainTheme = theme;
+                }
+            }
+            
+            // Generate personalized message
+            if (answers.includes('unsure') || answers.includes('fear')) {
+                message = `Your journey reflects a path of ${mainThemes[mainTheme]} and courage. Even with uncertainties, you're showing strength by exploring change. Remember that progress isn't always linear, and every small step matters.`;
+            } else if (answers.includes('ready') || answers.includes('growth')) {
+                message = `Your responses show a wonderful spirit of ${mainThemes[mainTheme]}. This positive energy will carry you through challenges. Keep nurturing your motivation and celebrate each milestone along your journey.`;
+            } else {
+                message = `Your approach centered on ${mainThemes[mainTheme]} reveals your thoughtful nature. By understanding your needs and aspirations, you're building a solid foundation for meaningful and lasting change.`;
+            }
+            
+            // Add universal encouragement
+            message += " You have everything you need for this journey - trust yourself and keep moving forward.";
+            
+            // Display the result
+            resultMessage.textContent = message;
+            resultCard.classList.add('active');
+        }
+
+        // Restart quiz
+        restartBtn.addEventListener('click', function() {
+            // Reset answers
+            answers = [];
+            
+            // Hide result card
+            resultCard.classList.remove('active');
+            
+            // Reset questions
+            document.querySelectorAll('.feedback').forEach(el => {
+                el.style.display = "none";
+                el.textContent = "";
+            });
+            
+            questions.forEach((q, index) => {
+                q.classList.remove('active');
+                if (index === 0) {
+                    q.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

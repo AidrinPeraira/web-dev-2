@@ -193,6 +193,236 @@ body {
     color: #e74c3c;
 }
 
+/* Chain Game Styles */
+.chain-game-container {
+    text-align: center;
+    padding: 2rem;
+}
+
+.chain-container {
+    position: relative;
+    width: 250px;
+    height: 250px;
+    margin: 20px auto;
+    cursor: pointer;
+}
+
+.chain-svg {
+    width: 100%;
+    height: 100%;
+    transition: all 0.3s ease;
+}
+
+.chain-links {
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.crack {
+    stroke: #e74c3c;
+    stroke-width: 4;
+    stroke-linecap: round;
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    opacity: 0;
+}
+
+.motivational-message {
+    margin-top: 20px;
+    font-size: 1.2rem;
+    color: #e74c3c;
+    font-weight: bold;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.motivational-message.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Quiz Styles */
+.quiz-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.question-card {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 2rem;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    display: none;
+}
+
+.question-card.active {
+    display: block;
+}
+
+.answers {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.answer-btn {
+    padding: 1rem;
+    background: rgba(231, 76, 60, 0.1);
+    border: 2px solid #e74c3c;
+    color: #e0e0e0;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.answer-btn:hover {
+    background: #e74c3c;
+    color: white;
+}
+
+.feedback {
+    margin-top: 1rem;
+    color: #e74c3c;
+    font-style: italic;
+}
+
+.result-card {
+    display: none;
+    text-align: center;
+    padding: 2rem;
+}
+
+.restart-btn {
+    margin-top: 1rem;
+    padding: 0.8rem 1.5rem;
+    background: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.restart-btn:hover {
+    background: #c0392b;
+}
+
+/* Chain Breaking Game */
+.chain-game-container {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.chain-container {
+    cursor: pointer;
+    margin: 2rem auto;
+    transition: transform 0.3s ease;
+}
+
+.chain-container:hover {
+    transform: scale(1.05);
+}
+
+#chain-message {
+    font-size: 1.5rem;
+    margin-top: 2rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+@keyframes crack-appear {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes chain-break {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2) rotate(5deg); }
+    100% { transform: scale(0.8) rotate(-10deg) translateY(20px); opacity: 0.5; }
+}
+
+/* Quiz Styles */
+.quiz-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.question-container {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 2rem;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+}
+
+.options-container {
+    display: grid;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.option-button {
+    background: rgba(231, 76, 60, 0.1);
+    border: 2px solid #e74c3c;
+    color: #e0e0e0;
+    padding: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1.1rem;
+}
+
+.option-button:hover {
+    background: rgba(231, 76, 60, 0.2);
+    transform: translateY(-2px);
+}
+
+.answer-message {
+    background: rgba(231, 76, 60, 0.1);
+    padding: 1rem;
+    border-radius: 5px;
+    margin-top: 1rem;
+    animation: fadeIn 0.5s ease;
+}
+
+.final-message-container {
+    text-align: center;
+    padding: 2rem;
+}
+
+.restart-button {
+    background: #e74c3c;
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 5px;
+    margin-top: 1.5rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.restart-button:hover {
+    background: #c0392b;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Parallax Sections */
+.break-chain-parallax {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1531206715517-5c0ba140b2b8?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+}
+
+.quiz-parallax {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1517960413843-0aee8e2b3285?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+}
+
 @media (max-width: 768px) {
     .celebrity-card {
         flex: 0 0 250px;

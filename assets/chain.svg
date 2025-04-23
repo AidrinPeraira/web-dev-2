@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100" width="200" height="100">
+    <style>
+        .chain-link {
+            fill: none;
+            stroke: #e74c3c;
+            stroke-width: 8;
+            stroke-linecap: round;
+        }
+        .crack {
+            fill: none;
+            stroke: #ffffff;
+            stroke-width: 2;
+            stroke-linecap: round;
+            opacity: 0;
+        }
+    </style>
+    <g id="chain">
+        <path class="chain-link" d="M50,50 C50,35 65,35 80,35 95,35 110,35 110,50 110,65 95,65 80,65 65,65 50,65 50,50Z" />
+        <path class="chain-link" d="M90,50 C90,35 105,35 120,35 135,35 150,35 150,50 150,65 135,65 120,65 105,65 90,65 90,50Z" />
+        <path class="crack crack1" d="M75,45 L85,55" />
+        <path class="crack crack2" d="M80,40 L90,60" />
+        <path class="crack crack3" d="M85,35 L95,65" />
+    </g>
+</svg>
